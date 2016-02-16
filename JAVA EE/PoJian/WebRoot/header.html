@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<title>header</title>
+<style>
+a{
+	text-decoration:none;
+}
+
+.nav a:visited{
+	color:white;
+}
+
+.nav a:LINK {
+	color:white;
+}
+
+</style>
+<script type="text/javascript">
+function SetHome(obj,url){
+    try{
+    	alert("设置");
+        obj.style.behavior='url(#default#homepage)';
+       	obj.setHomePage(url);
+       	alert("设置成功");
+   	}catch(e){
+       	if(window.netscape){
+          	try{
+           	   netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+        	}catch(e){
+              	alert("抱歉，此操作被浏览器拒绝！请在浏览器地址栏输入“about:config”并回车然后将[signed.applets.codebase_principal_support]设置为'true'");
+          	}
+       	}else{
+        	alert("抱歉，您所使用的浏览器无法完成此操作。您需要手动将【"+url+"】设置为首页。");
+       	}
+  	}
+}
+
+function AddFavorite(title, url) {
+	  try {
+	      window.external.addFavorite(url, title);
+	  }
+	  catch (e) {
+	     try {
+	       window.sidebar.addPanel(title, url, "");
+	    	}
+	     catch (e) {
+	         alert("抱歉，您所使用的浏览器无法完成此操作。加入收藏失败，请使用Ctrl+D进行添加");
+	     }
+	  }
+	}
+</script>
+</head>
+<body style="margin-left:0px;">
+<div style="width:920px; height:25px; margin-left:auto; margin-right:auto; margin-top:auto;">
+<p><span style="float:left;"><a href="publish.jsp" target="_top">【发布信息】</a><a href="backwelcome.jsp" target="_top">【进入后台】</a></span><span style="float:right;"><a href="javascript:void(0);" onclick="SetHome(this, window.parent.document.URL);" target="_top">设为主页</a> - <a href="javascript:void(0);" onclick="AddFavorite('我的网站',window.parent.document.URL)" target="_top">收藏本页</a> - <a href="index.jsp" target="_top">联系我们</a></span></p>
+</div>
+<div style="width:920px; margin-left:auto; margin-right:auto;">
+<div style="width:220px; height:60px; background:url(img/logo.gif) no-repeat 100%; float:left;">
+</div>
+<div class="nav" style="width:700px; height:60px; background:url(img/menu.gif) no-repeat 100%; float:left">
+	<table width="100%" height="60px" style="text-align:center;" border="0px">
+	<tr><td><a href="index.jsp" target="_top">首页</a></td> <td><a href="detail.jsp?id=1" target="_top">招聘信息</a></td> <td><a href="detail.jsp?id=2" target="_top">培训信息</a></td> <td><a href="detail.jsp?id=3" target="_top">房屋信息</a></td><td><a href="detail.jsp?id=4" target="_top">求购信息</a></td> <td><a href="detail.jsp?id=5" target="_top">招商引资</a></td></tr>
+	<tr><td><a href="detail.jsp?id=6" target="_top">公寓信息</a></td> <td><a href="detail.jsp?id=7" target="_top">求职信息</a></td> <td><a href="detail.jsp?id=8" target="_top">家教信息</a></td> <td><a href="detail.jsp?id=9" target="_top">车辆信息</a></td><td><a href="detail.jsp?id=10" target="_top">出售信息</a></td> <td><a href="detail.jsp?id=11" target="_top">寻找启示</a></td></tr>
+	</table>
+</div>
+</div> 
+<div style="width:920px; height:112px; margin-left:auto; margin-right:auto;">
+<img src="img/pcard1.jpg" style="float:left;"/>
+</div>
+</body>
+</html>

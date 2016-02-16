@@ -1,0 +1,23 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>左侧</title>
+</head>
+<body style="margin-left:0px;margin-top:0px;">
+	<div style="width:225px;height:100px; float:left;">
+	    <div style="width:225px;height:18px; float:left; color:blue; background-color:RGB(240,240,240);">
+	        <span>■</span><span style="margin-left:4px;"><b>信息检索</b></span>
+	    </div>
+	    <div style="width:225px;height:auto; float:left;">
+		    <form action="finddetail.jsp" method="post" target="_top">
+			    <table style="color:black; font-size:10px; width:100%;">
+			        <tr><td style="width:75px; height:1em;">关键词：</td><td colspan="2"><input name="key" type="text" size="18"/></td></tr>
+			        <tr><td style="width:75px; height:1em;">条&nbsp;件：</td><td style="width:85px; "><select name="reason" style="width:85px;"><option value="1">信息标题</option><option value="2">联系人</option></select></td><td><input type="submit" name="submit" value="搜索"/></td></tr>
+			        <tr><td colspan="3">搜索类型：<input type="radio" name="aop" value="all" checked="checked"/>全字匹配<input type="radio" name="aop" value="part"/>模糊搜索</td></tr>
+			    </table>
+		    </form>
+	    </div>
+    </div>
+</body>
+</html>

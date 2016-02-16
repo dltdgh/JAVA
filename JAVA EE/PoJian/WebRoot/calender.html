@@ -1,0 +1,137 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html" charset="UTF-8"/>
+    <title>日历</title>
+    <style>
+		.calender{
+			clear: left;
+		}
+		.calender{
+			background-image: url("../img/leftD.jpg");
+			background-repeat: no-repeat;
+			background-position: 0px 25px;
+			width: 225px;
+			height: 230px;
+			float: left;
+		}
+
+		.bluesquare div{
+			width: 12px;
+			height: 12px;
+			background-color: #00F;
+			float: left;
+		}
+		.bluesquare dd{
+			margin-left: 4px;
+			margin-top: -4px;
+			color: blue;
+			font-weight: bold;
+			float: left;
+		}
+
+		.datetop{
+			width: 220px;
+		}
+		.datetop td{
+			border: 1px solid darkgray;
+		}
+		.calender table #cur_date{
+			font-size: 13px;
+			text-align: center;
+		}
+		.dayname td{
+			text-align: center;
+			background-color: #EEE;
+		}
+	</style>
+    <script language="javascript">
+		var weekName = ["日", "一", "二","三","四","五","六"];
+		var monthDay = [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+		function showDate() {
+		var today = new Date();
+		var hh = today.getHours();
+		var mm = today.getMinutes();
+		var ss = today.getSeconds();
+		var year = today.getFullYear();
+		var month = today.getMonth() + 1;
+		var day = today.getDate();
+		var week = today.getDay();
+		var dateStr = year+"年"+month+"月"+day+"日 星期"+weekName[week] + " " + hh+":"+mm+":"+ss;
+		var dateInfo = document.getElementById("cur_date");
+		dateInfo.innerText = dateStr;
+		var dayTable = document.getElementById("daytable");
+		var tableInfo;
+		var firstDay = today;
+
+		firstDay.setDate(1);
+		startDay = firstDay.getDay();
+		var i;
+		var maxDay = monthDay[month];
+		if (month == 1 && (year % 100 != 0 && year % 4 == 0 || (year % 400 == 0))) {
+			maxDay++;
+		}
+		dayTable.style.textAlign = "center";
+		dayTable.style.width = "220px";
+		dayTable.style.marginTop = "5px";
+		tableInfo = "";
+		var curDay = 1;
+		for(i=0; i <6; ++i) {
+			tableInfo += "<tr>";
+			for (var j=0; j<7; ++j) {
+				if (i*7+j < startDay) {
+					tableInfo += "<td>";
+				}
+
+				if (i*7+j >= startDay && curDay <= maxDay) {
+					if (curDay != day) {
+						tableInfo += "<td style=\"border: 1px solid darkgray;\">";
+					} else {
+						tableInfo += "<td style=\"border: 1px solid gray; background-color: gray;\">";
+					}
+					tableInfo += curDay;
+					curDay++;
+				}
+				tableInfo += "</td>";
+			}
+			tableInfo += "</tr>";
+		}
+
+		dayTable.innerHTML = tableInfo;
+		setTimeout(showDate, 1000);
+		}
+
+	</script>
+</head>
+<body onload="showDate()" style="margin-left:0px;">
+<!--日历-->
+<div class="calender">
+	<div style="width:225px;height:18px; float:left; color:blue; background-color:RGB(240,240,240);">
+        <span>■</span><span style="margin-left:4px;"><b>日历</b></span>
+    </div>
+    <div style="width:225px; float:left;">
+		<table align="center" class="datetop" style="color:black;">
+			<tr>
+				<td id="cur_date" colspan="7">
+					2015年12月2日 星期三 13:33:00
+				</td>
+			</tr>
+			<tr class="dayname">
+				<td>日</td>
+				<td>一</td>
+				<td>二</td>
+				<td>三</td>
+				<td>四</td>
+				<td>五</td>
+				<td>六</td>
+			</tr>
+		</table>
+
+		<table id="daytable" style="color:black;">
+
+		</table> 	
+	</div>
+</div>
+</body>
+</html>
