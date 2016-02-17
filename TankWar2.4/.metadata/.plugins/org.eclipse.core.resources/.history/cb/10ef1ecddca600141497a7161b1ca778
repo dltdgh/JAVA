@@ -1,0 +1,22 @@
+import java.awt.Color;
+import java.awt.Graphics;
+
+
+public class Missile {
+	int x, y;
+	public static final int radius = 10;
+	Tank.Direction dir;
+	
+	public Missile(int x, int y, Tank.Direction dir) {
+		super();
+		this.x = x;
+		this.y = y;
+		this.dir = dir;
+	}
+	
+	public void draw(Graphics g){
+		Color c = g.getColor();
+		g.setColor(Color.ORANGE);
+		g.drawOval(x, y, radius, radius);
+	}
+}

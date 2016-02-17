@@ -1,0 +1,10 @@
+
+public class Tank {
+	
+	int x, y, width = 30, height = 30;
+	
+	public Tank(int x, int y){
+		this.x = x;
+		this.y = y;
+	}
+}

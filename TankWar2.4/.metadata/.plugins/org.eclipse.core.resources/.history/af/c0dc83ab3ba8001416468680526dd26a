@@ -1,0 +1,35 @@
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Rectangle;
+
+
+public class Wall {
+	int x, y;
+	int width, height;
+	int life = 5;
+	TankClient tc;
+	
+	public Wall(int x, int y, TankClient tc){
+		this.x = x;
+		this.y = y;
+		this.tc = tc;
+		tc.mark[x/Tank.width][y/Tank.height] = true;
+	}
+	
+	public void draw(Graphics g) {
+		if(life > 0){
+			Color c = g.getColor();
+			g.setColor(Color.RED);
+			g.fillRect(x, y, width, height);
+			g.setColor(c);
+		}
+		else{
+			tc.mark[x/Tank.width][y/Tank.height] = false;
+			tc.walls.remove(this);
+		}
+	}
+	
+	public Rectangle getRect() {
+		return new Rectangle(x, y, width, height);
+	}
+}

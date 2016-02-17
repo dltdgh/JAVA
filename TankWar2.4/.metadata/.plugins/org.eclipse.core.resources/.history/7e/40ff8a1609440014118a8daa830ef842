@@ -1,0 +1,48 @@
+package test;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.Scanner;
+
+import javax.net.ssl.HttpsURLConnection;
+import javax.security.auth.login.LoginContext;
+import javax.xml.ws.http.HTTPBinding;
+
+
+public class Test {
+	
+	static String cookie = null;
+	
+	public static void main(String[] args) throws Exception {
+		String str;
+		Scanner  sc = new Scanner(System.in);
+		str = sc.next();
+		Login(str);
+	}
+	
+	public static void Login(String cookie) throws Exception{
+		
+		
+		URL url = new URL("http://jw.qdu.edu.cn/academic/showPersonalInfo.do");
+		HttpURLConnection huc = (HttpURLConnection)url.openConnection();
+		huc.setRequestMethod("GET");
+		huc.setRequestProperty("Content-type", "application/x-java-serialized-object");
+		huc.setRequestProperty("Cookie", cookie);
+		huc.connect();
+		BufferedReader br = new BufferedReader(new InputStreamReader(huc.getInputStream()));
+		String tString = null;
+		while((tString = br.readLine()) != null){
+			System.out.println(tString);
+		}
+		
+		System.out.println(huc.getHeaderField("Set-Cookie"));
+	}
+	
+}

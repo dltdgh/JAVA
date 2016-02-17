@@ -1,0 +1,17 @@
+import java.util.Random;
+
+
+public class Gift {
+	int x, y;
+	int state = 0;
+	/*state:
+	 * 1: red add a life
+	 * 2: orange kill all
+	 * 3: yellow missile mess
+	 * 4: blue transmit
+	 * 5: purple add a friend tank*/
+	Random random = new Random();
+	public Gift(){
+		
+	}
+}

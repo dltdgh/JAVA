@@ -1,0 +1,92 @@
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
+
+public class TankClient extends JFrame{
+	
+	int x = 0, y = 0;
+	public static final int pixelWidth = 640, pixelHeight = 480;
+	JPanel panel;
+	Image offScreenImage = null;
+	
+	public void launchFrame(){
+		
+		panel = new JPanel(){
+			
+			@Override
+			public void paint(Graphics g) {
+				// TODO Auto-generated method stub
+			//	System.out.println("hahah");
+				if(offScreenImage == null){
+					offScreenImage = this.createImage(this.getWidth(), this.getHeight());
+				}
+				Graphics gOffScreen = offScreenImage.getGraphics();
+				Color c = gOffScreen.getColor();
+				gOffScreen.setColor(Color.GREEN);
+				gOffScreen.fillRect(0, 0, this.getWidth(), this.getHeight());
+				gOffScreen.setColor(c);
+				drawOffScreenImage(gOffScreen);
+				g.drawImage(offScreenImage, 0, 0, this);
+			}
+
+			private void drawOffScreenImage(Graphics g) {
+				// TODO Auto-generated method stub
+				Color c = g.getColor();
+				g.setColor(Color.RED);
+				g.fillRect(x, y, 30, 30);
+				x += 5;
+				y += 5;
+				g.setColor(c);
+			}
+		};
+		add(panel);
+		this.setLocation(0, 0);
+		this.setSize(pixelWidth, pixelHeight);
+		this.setResizable(false);
+		//this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setVisible(true);
+		this.setBackground(Color.GREEN);
+		this.setTitle("Ì¹¿Ë´óÕ½");
+		this.addWindowListener(new WindowAdapter() {
+
+			@Override
+			public void windowClosing(WindowEvent e) {
+				// TODO Auto-generated method stub
+				System.exit(0);
+			}
+			
+		});
+		Thread thread = new Thread(new PaintThread());
+		thread.start();
+	}
+	
+	public static void main(String[] args) {
+		TankClient tc = new TankClient();
+		tc.launchFrame();
+	}
+	
+	private class PaintThread implements Runnable{
+
+		@Override
+		public void run() {
+			// TODO Auto-generated method stub
+			while(true)
+			{
+				panel.repaint();
+				try {
+					Thread.sleep(100);
+				} catch (Exception e) {
+					// TODO: handle exception
+					e.printStackTrace();
+				}
+			}
+		}
+		
+	}
+}

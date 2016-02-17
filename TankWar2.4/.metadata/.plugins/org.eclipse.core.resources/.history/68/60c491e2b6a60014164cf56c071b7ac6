@@ -1,0 +1,39 @@
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.event.KeyEvent;
+
+
+public class Tank {
+	
+	private int x, y;
+	private int width = 30, height = 30;
+	private int xSpeed = 30, ySpeed = 30;
+	
+	public Tank(int x, int y){
+		this.x = x;
+		this.y = y;
+	}
+	
+	public void draw(Graphics g){
+		Color c = g.getColor();
+		g.setColor(Color.RED);
+		g.fillRect(x, y, width, height);
+		g.setColor(c);
+	}
+	
+	public void keyPressed(int key, int mapWidth, int mapHeight){
+		
+		if(key == KeyEvent.VK_RIGHT && x+xSpeed+5 < mapWidth){
+			x += xSpeed;
+		}
+		else if(key == KeyEvent.VK_LEFT && x > 0){
+			x -= xSpeed;
+		}
+		else if(key == KeyEvent.VK_DOWN && y+ySpeed+5 < mapHeight){
+			y += ySpeed;
+		}
+		else if(key == KeyEvent.VK_UP && y > 0){
+			y -= ySpeed;
+		}
+	}
+}

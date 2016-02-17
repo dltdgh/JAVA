@@ -1,0 +1,9 @@
+package Tcp_Ip;
+
+import java.sql.*;
+
+public interface ConnectionPool {
+	public ConnectiongetConnection() throws Exception{
+		
+	}
+}

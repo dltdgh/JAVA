@@ -1,0 +1,37 @@
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.event.KeyEvent;
+
+
+public class Tank {
+	
+	int x, y, width = 30, height = 30;
+	
+	public Tank(int x, int y){
+		this.x = x;
+		this.y = y;
+	}
+	
+	public void draw(Graphics g){
+		Color c = g.getColor();
+		g.setColor(Color.RED);
+		g.fillRect(x, y, width, height);
+		g.setColor(c);
+	}
+	
+	public void move(int key, int mapWidth, int mapHeight){
+		
+		if(key == KeyEvent.VK_RIGHT && x+width+5 < mapWidth){
+			x += 30;
+		}
+		else if(key == KeyEvent.VK_LEFT && x > 0){
+			x -= 30;
+		}
+		else if(key == KeyEvent.VK_DOWN &&y+height+5 < mapHeight){
+			y += 30;
+		}
+		else if(key == KeyEvent.VK_UP && y > 0){
+			y -= 30;
+		}
+	}
+}

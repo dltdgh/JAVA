@@ -1,0 +1,51 @@
+import java.awt.Color;
+import java.awt.Graphics;
+import java.util.Random;
+
+
+public class Gift {
+	int x, y;
+	int width = 30, height = 30;
+	int state = 0;
+	/*state:
+	 * 1: red add a life
+	 * 2: orange kill all
+	 * 3: yellow missile mess
+	 * 4: blue transmit
+	 * 5: purple add a friend tank*/
+	Random random = new Random();
+	TankClient tc = null;
+	boolean Alive = true;
+	
+	public Gift(int x, int y, TankClient tc){
+		this.x = x;
+		this.y = y;
+		this.tc = tc;
+		this.state = Math.abs(random.nextInt())%5+1;
+	}
+	
+	public void draw(Graphics g){
+		
+		Color c = g.getColor();
+		switch (state) {
+		case 1:
+			g.setColor(Color.RED);
+			g.fillOval(x, y, width, height);
+			break;
+		case 2:
+			
+			break;
+		case 3:
+			
+			break;
+		case 4:
+			
+			break;
+		case 5:
+			
+			break;
+		default:
+			break;
+		}
+	}
+}

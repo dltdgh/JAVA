@@ -1,0 +1,12 @@
+package Tcp_Ip;
+
+public class ConnectionProvider {
+	private String JDBC_DRIVER;
+	private String DB_URL;
+	private String DB_USER;
+	private String DB_PASSWORD;
+	
+	public ConnectionProvider(){
+		JDBC_DRIVER = 
+	}
+}

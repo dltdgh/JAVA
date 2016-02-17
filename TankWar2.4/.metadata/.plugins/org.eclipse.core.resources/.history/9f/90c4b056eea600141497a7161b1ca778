@@ -1,0 +1,93 @@
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.event.KeyEvent;
+import java.util.*;
+
+public class Tank {
+	
+	private int x, y;                                //坦克位置
+	private int width = 30, height = 30;              //坦克大小
+	private int xSpeed = 30, ySpeed = 30;             //坦克速度
+	
+	enum Direction {L, R, U, D};                       //坦克方向
+	private Direction dir = Direction.R;               //初始方向
+	
+	Color color = null;                                 //坦克颜色
+	
+	ArrayList<Missile> missiles = new ArrayList<Missile>();
+	
+	public Tank(int x, int y, boolean flag){                       //构造方法
+		
+		this.x = x;
+		this.y = y;
+		
+		if(flag){
+			color = Color.RED;
+		}
+		else {
+			color = Color.BLUE;
+		}
+	}
+	
+	public void draw(Graphics g){
+		
+		for(int i = 0; i < missiles.size(); i++){
+			if(missiles.get(i).visiable){
+				missiles.get(i).draw(g);
+			}
+			else{
+				missiles.remove(i);
+				i--;
+			}
+		}
+		g.drawString("There are "+missiles.size()+"missiles", 10, 15);
+		Color c = g.getColor();
+		g.setColor(color);
+		g.fillRect(x, y, width, height);
+		g.setColor(c);
+	}
+	
+	public void keyPressed(int key){
+		
+		if(key == KeyEvent.VK_RIGHT){
+			if(dir == Direction.R && x+xSpeed+5 < TankClient.mapWidth){
+				x += xSpeed;
+			}
+			else {
+				dir = Direction.R;
+			}
+		}
+		else if(key == KeyEvent.VK_LEFT){
+			if(dir == Direction.L && x > 0){
+				x -= xSpeed;
+			}
+			else {
+				dir = Direction.L;
+			}
+		}
+		else if(key == KeyEvent.VK_DOWN){
+			if(dir == Direction.D && y+ySpeed+5 < TankClient.mapHeight){
+				y += ySpeed;
+			}
+			else{
+				dir = Direction.D;
+			}
+		}
+		else if(key == KeyEvent.VK_UP){
+			if(dir == Direction.U && y > 0){
+				y -= ySpeed;
+			}
+			else {
+				dir = Direction.U;
+			}
+		}
+		else if(key == KeyEvent.VK_SPACE){
+			fire();
+		}
+	}
+	
+	private void fire() {
+		// TODO Auto-generated method stub
+		missiles.add(new Missile(x+width/2-Missile.radius/2, y+height/2-Missile.radius/2, dir));
+	}
+}

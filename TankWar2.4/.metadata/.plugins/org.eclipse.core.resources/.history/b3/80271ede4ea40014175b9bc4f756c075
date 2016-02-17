@@ -1,0 +1,71 @@
+package Tcp_Ip;
+
+import java.sql.Connection;
+import java.util.ArrayList;
+import java.util.Iterator;
+
+public class ConnectionPoolImpl implements ConnectionPool{
+
+	private ConnectionProvider provider = new ConnectionProvider();
+	private final ArrayList<Connection> pool = new ArrayList<Connection>();
+	private int poolSize = 5;
+	
+	public ConnectionPoolImpl(){}
+	
+	public ConnectionPoolImpl(int poolSize){
+		this.poolSize = poolSize;
+	}
+	
+	/*从连接池取出连接*/
+	@Override
+	public Connection getConnection() throws Exception {
+		// TODO Auto-generated method stub
+		synchronized (pool) {
+			if(!pool.isEmpty()){
+				int last = pool.size()-1;
+				Connection conn = pool.remove(last);
+				return conn;
+			}
+		}
+		Connection conn = provider.getConnection();
+		return conn;
+	}
+
+	@Override
+	public void releaseConnection(Connection conn) throws Exception {
+		// TODO Auto-generated method stub
+		synchronized (pool) {
+			int currentSize = pool.size();
+			if(currentSize < poolSize){
+				pool.add(conn);
+				return;
+			}
+		}
+		try {
+			conn.close();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+	}
+	
+	protected void finalize() {
+		close();
+	}
+	
+	@Override
+	public void close() {
+		// TODO Auto-generated method stub
+		Iterator<Connection> iter = pool.iterator();
+		while(iter.hasNext()){
+			try {
+				iter.next().close();
+			} catch (Exception e) {
+				// TODO: handle exception
+				e.printStackTrace();
+			}
+		}
+		pool.clear();
+	}
+
+}

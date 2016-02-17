@@ -1,0 +1,6 @@
+
+public class Gift {
+	int x, y;
+	int state = 0;
+	
+}

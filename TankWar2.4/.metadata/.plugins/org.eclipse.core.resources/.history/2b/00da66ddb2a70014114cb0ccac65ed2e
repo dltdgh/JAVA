@@ -1,0 +1,187 @@
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Rectangle;
+import java.awt.event.KeyEvent;
+import java.text.spi.BreakIteratorProvider;
+import java.util.*;
+
+public class Tank {
+	
+	TankClient tc;
+	private int x, y;                                //坦克位置
+	private int width = 30, height = 30;              //坦克大小
+	private int xSpeed = 30, ySpeed = 30;             //坦克速度
+	
+	private boolean flag = true;
+	
+	boolean Alive = true;
+	
+	enum Direction {L, R, U, D};                       //坦克方向
+	private Direction dir = Direction.R;               //初始方向
+	
+	Color color = null;                                 //坦克颜色
+
+	static Random random = new Random();
+	
+	public Tank(int x, int y, boolean flag, TankClient tc){                     //构造方法
+		
+		this.x = x;
+		this.y = y;
+		this.flag = flag;
+		this.tc = tc;
+		int temp = Math.abs(random.nextInt()%4);
+		
+		switch (temp) {
+		case 0:
+			dir = Direction.U;
+			break;
+		case 1:
+			dir = Direction.D;
+			break;
+		case 2:
+			dir = Direction.L;
+			break;
+		case 3:
+			dir = Direction.R;
+			break;
+		default:
+			break;
+		}
+		
+		if(flag){
+			color = Color.RED;
+		}
+		else {
+			color = Color.BLUE;
+		}
+	}
+	
+	public int getX() {
+		return x;
+	}
+
+	public int getY() {
+		return y;
+	}
+	
+	public int getWidth() {
+		return width;
+	}
+
+	public int getHeight() {
+		return height;
+	}
+	
+	public boolean getFlag(){
+		return this.flag;
+	}
+	
+	public void draw(Graphics g){
+		
+	//	g.drawString("There are "+missiles.size()+" missiles", 10, 15);
+		if(this.Alive){
+			Color c = g.getColor();
+			g.setColor(color);
+			g.fillRect(x, y, width, height);
+			g.setColor(Color.YELLOW);
+			switch (dir) {
+			case R:
+				g.fillRect(x+width/2, y+height/2-height/6, width/2, height/3);
+				break;
+			case L:
+				g.fillRect(x, y+height/2-height/6, width/2, height/3);
+				break;
+			case U:
+				g.fillRect(x+width/2-width/6, y, width/3, height/2);
+				break;
+			case D:
+				g.fillRect(x+width/2-width/6, y+height/2, width/3, height/2);
+				break;
+			default:
+				break;
+			}
+			g.setColor(Color.CYAN);
+			g.fillOval(x+width/4, y+height/4, width/2, height/2);
+			g.setColor(c);
+		}
+		else {
+			if(!flag){
+				tc.tanks.remove(this);
+			}
+		}
+	}
+	
+	public void keyPressed(int key){
+		
+		if(key == KeyEvent.VK_RIGHT){
+			if(dir == Direction.R && x+xSpeed+5 < tc.mapWidth){
+				x += xSpeed;
+			}
+			else {
+				dir = Direction.R;
+			}
+		}
+		else if(key == KeyEvent.VK_LEFT){
+			if(dir == Direction.L && x > 0){
+				x -= xSpeed;
+			}
+			else {
+				dir = Direction.L;
+			}
+		}
+		else if(key == KeyEvent.VK_DOWN){
+			if(dir == Direction.D && y+ySpeed+5 < tc.mapHeight){
+				y += ySpeed;
+			}
+			else{
+				dir = Direction.D;
+			}
+		}
+		else if(key == KeyEvent.VK_UP){
+			if(dir == Direction.U && y > 0){
+				y -= ySpeed;
+			}
+			else {
+				dir = Direction.U;
+			}
+		}
+		else if(key == KeyEvent.VK_SPACE){
+			tc.missiles.add(fire());
+		}
+	}
+	
+	private Missile fire() {
+		// TODO Auto-generated method stub
+		return new Missile(x+width/2-Missile.radius/2, y+height/2-Missile.radius/2, dir, flag, tc);
+	}
+	
+	public Rectangle getRect() {
+		return new Rectangle( x, y, width, height);
+	}
+	
+	public void autoMove() {
+		if(flag){
+			return;
+		}
+		int temp = Math.abs(random.nextInt())%5;
+		switch (temp) {
+		case 0:
+			keyPressed(KeyEvent.VK_UP);
+			break;
+		case 1:
+			keyPressed(KeyEvent.VK_DOWN);
+			break;
+		case 2:
+			keyPressed(KeyEvent.VK_LEFT);
+			break;
+		case 3:
+			keyPressed(KeyEvent.VK_RIGHT);
+			break;
+		case 4:
+			keyPressed(KeyEvent.VK_SPACE);
+			break;
+		default:
+			break;
+		}
+	}
+}

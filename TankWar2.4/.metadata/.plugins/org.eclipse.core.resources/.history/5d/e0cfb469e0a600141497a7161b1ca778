@@ -1,0 +1,109 @@
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
+
+
+public class TankClient extends JFrame{
+	
+	Tank myTank = new Tank(0, 0, true);
+	Missile m = new Missile(0, 0, Tank.Direction.R);
+	public static final int pixelWidth = 640, pixelHeight = 480;
+	public static int mapWidth, mapHeight;
+	JPanel panel;
+	Image offScreenImage = null;
+	
+	public void launchFrame(){
+		
+		panel = new JPanel(){
+			
+			@Override
+			public void paint(Graphics g) {
+				// TODO Auto-generated method stub 
+				/*双缓冲缓解闪烁问题*/
+				if(offScreenImage == null){
+					offScreenImage = this.createImage(this.getWidth(), this.getHeight());
+				}
+				Graphics gOffScreen = offScreenImage.getGraphics();
+				Color c = gOffScreen.getColor();
+				gOffScreen.setColor(Color.GREEN);
+				gOffScreen.fillRect(0, 0, this.getWidth(), this.getHeight());
+				gOffScreen.setColor(c);
+				drawOffScreenImage(gOffScreen);
+				g.drawImage(offScreenImage, 0, 0, this);
+			}
+
+			private void drawOffScreenImage(Graphics g) {
+				// TODO Auto-generated method stub
+				m.draw(g);
+				myTank.draw(g);
+			}
+		};
+		add(panel);
+		this.addKeyListener(new KeyListener());
+		
+		this.setLocation(0, 0);
+		this.setSize(pixelWidth, pixelHeight);
+		this.setResizable(false);
+		//this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setVisible(true);
+		
+		mapWidth = panel.getWidth();
+		mapHeight = panel.getHeight();
+		
+		this.setBackground(Color.GREEN);
+		this.setTitle("坦克大战");
+		this.addWindowListener(new WindowAdapter() {
+
+			@Override
+			public void windowClosing(WindowEvent e) {
+				// TODO Auto-generated method stub
+				System.exit(0);
+			}
+			
+		});
+		Thread thread = new Thread(new PaintThread());
+		thread.start();
+	}
+	
+	public static void main(String[] args) {
+		TankClient tc = new TankClient();
+		tc.launchFrame();
+	}
+	
+	private class PaintThread implements Runnable{
+
+		@Override
+		public void run() {
+			// TODO Auto-generated method stub
+			while(true)
+			{
+				panel.repaint();
+				try {
+					Thread.sleep(100);
+				} catch (Exception e) {
+					// TODO: handle exception
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+	
+	private class KeyListener extends KeyAdapter{
+
+		@Override
+		public void keyPressed(KeyEvent e) {
+			// TODO Auto-generated method stub
+			int key = e.getKeyCode();
+			myTank.keyPressed(key);
+		}
+		
+	}
+}

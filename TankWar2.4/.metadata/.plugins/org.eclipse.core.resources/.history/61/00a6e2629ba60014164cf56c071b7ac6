@@ -1,0 +1,24 @@
+import java.awt.Color;
+import java.awt.Graphics;
+
+
+public class Tank {
+	
+	int x, y, width = 30, height = 30;
+	
+	public Tank(int x, int y){
+		this.x = x;
+		this.y = y;
+	}
+	
+	public void draw(Graphics g){
+		Color c = g.getColor();
+		g.setColor(Color.RED);
+		g.fillRect(x, y, width, height);
+		g.setColor(c);
+	}
+	
+	public void move(int key){
+		
+	}
+}

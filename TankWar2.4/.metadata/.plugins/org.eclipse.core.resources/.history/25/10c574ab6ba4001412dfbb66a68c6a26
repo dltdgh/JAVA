@@ -1,0 +1,40 @@
+package Tcp_Ip;
+
+import java.sql.Connection;
+
+public class Pool1Tester implements Runnable{
+	
+	ConnectionPool pool = new ConnectionPoolImpl();
+	
+	public static void main(String[] args) throws Exception{
+		Pool1Tester tester = new Pool1Tester();
+		Thread[] threads = new Thread[30];
+		for(int i = 0; i < threads.length; i++){
+			threads[i] = new Thread(tester);
+			threads[i].start();
+			Thread.sleep(300);
+		}
+		
+		for(int i = 0; i < threads.length; i++){
+			threads[i].join();
+		}
+		
+	}
+	
+	public void close() {
+		pool.close();
+	}
+	
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		try {
+			Connection conn = pool.getConnection();
+			System.out.println(Thread.currentThread().getName()+": 从线程池取出一个连接"+conn);
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+	}
+}
