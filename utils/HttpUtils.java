@@ -3,6 +3,7 @@ package com.dlt.utils;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Map;
@@ -36,7 +37,7 @@ public class HttpUtils {
 			HttpURLConnection conn = (HttpURLConnection)url.openConnection();
 			conn.setConnectTimeout(TIME_OUT);
 			conn.setRequestMethod("GET");
-//			conn = addHeaders(conn, null);
+			conn = addHeaders(conn, null);
 			if (conn.getResponseCode() == 200) {
 				in = conn.getInputStream();
 			}		
@@ -84,7 +85,7 @@ public class HttpUtils {
 		if (headers == null) {
 			conn.setRequestProperty("accept", "Accept text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
 			conn.setRequestProperty("accept-charset", "utf-8;q=0.7,*;q=0.7");
-			conn.setRequestProperty("accept-encoding", "gzip, deflate");
+		//	conn.setRequestProperty("accept-encoding", "gzip, deflate");
 			conn.setRequestProperty("accept-language", "zh-cn,zh;q=0.5");
 			conn.setRequestProperty("connection", "keep-alive");
 			conn.setRequestProperty("user-agent", "Mozilla/5.0 (Windows NT 6.2; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.97 Safari/537.36");
@@ -108,17 +109,44 @@ public class HttpUtils {
 		String charset = getPageEncoding(urlString);  //获取页面编码
 		StringBuilder sb = new StringBuilder();
 		InputStream in = excuteGet(urlString, params);
-		Scanner sc = new Scanner(in, charset);
-		while (sc.hasNext()) {
-			sb.append(sc.nextLine()+"\n");
-		}
-		try {
-			sc.close();
-			in.close();
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
-		
+		if(in != null){
+			Scanner sc = new Scanner(in, charset);
+			while (sc.hasNext()) {
+				sb.append(sc.nextLine()+"\n");
+			}
+			try {
+				sc.close();
+				in.close();
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+		}	
+		return sb.toString();
+	}
+	
+	/**
+	 * 使用post方法获取网页文本字符串
+	 * @param urlString
+	 * @param params
+	 * @return
+	 */
+	
+	public static String getContentFromURLByPost(String urlString, Map<String, String> params){
+		String charset = getPageEncoding(urlString);  //获取页面编码
+		StringBuilder sb = new StringBuilder();
+		InputStream in = excutePost(urlString, params);
+		if (in != null) {
+			Scanner sc = new Scanner(in, charset);
+			while (sc.hasNext()) {
+				sb.append(sc.nextLine()+"\n");
+			}
+			try {
+				sc.close();
+				in.close();
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+		}	
 		return sb.toString();
 	}
 	
@@ -141,6 +169,9 @@ public class HttpUtils {
 			}
 		}
 		System.out.println(urlStr);
+		
+		urlStr = transCode(urlStr, "utf-8", "iso-8859-1");
+		
 		URL url = null;
 		try {
 			url = new URL(urlStr);
@@ -162,24 +193,25 @@ public class HttpUtils {
 		String reg = "content=\".*?charset=(.*?)\"";
 		Pattern pattern = Pattern.compile(reg);
 		InputStream in = excuteGet(urlString, null);
-		Scanner sc = new Scanner(in);
-		String temp;
-		boolean flag = false;
-		while (sc.hasNext()) {
-			temp = sc.nextLine();
-			Matcher matcher = pattern.matcher(temp);
-			while (matcher.find()) {
-				charset = matcher.group(1);
-				flag = true;
-				break;
+		if (in != null) {
+			Scanner sc = new Scanner(in);
+			String temp;
+			boolean flag = false;
+			while (sc.hasNext()) {
+				temp = sc.nextLine();
+				Matcher matcher = pattern.matcher(temp);
+				while (matcher.find()) {
+					charset = matcher.group(1);
+					flag = true;
+					break;
+				}
+				if (flag) {
+					break;
+				}
 			}
-			if (flag) {
-				break;
-			}
-		}
-		sc.close();
-		closeInputStream(in);
-		
+			sc.close();
+			closeInputStream(in);
+		}	
 		System.out.println(charset);
 		return charset;
 	}
@@ -189,6 +221,7 @@ public class HttpUtils {
 	 * @param out
 	 * @param params
 	 */
+	
 	public static void writeParamsToOutputStream(OutputStream out, Map<String, String> params){
 		String temp = "";
 		for (Map.Entry<String, String> entry : params.entrySet()) {
@@ -232,6 +265,8 @@ public class HttpUtils {
 		}
 	}
 	
+	
+	
 	public static void closeOutputStream(OutputStream out) {
 		try {
 			out.close();
@@ -240,7 +275,20 @@ public class HttpUtils {
 		}
 	}
 	
+	public static String transCode(String src, String srcEncoding, String targetEncoding) {
+		try {
+			src = new String(src.getBytes(srcEncoding), targetEncoding);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return src;
+	}
+
 	public static void main(String[] args) {
-		System.out.println(getContentFromURLByGet("http://www.2cto.com/meinv/sexmv", null));
+		String url1 = "http://www.2cto.com/meinv/sexmv/";
+		String url2 = "http://www.baidu.com";
+		String url3 = "http://openapi.aibang.com/bus/lines?q=227&alt=json&app_key=8f2d8f22e79cffc5dea50a225eedc6cb&city=青岛";
+		System.out.println(getContentFromURLByGet(url2, null));
 	}
 }
