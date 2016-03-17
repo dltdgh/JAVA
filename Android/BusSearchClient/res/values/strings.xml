@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">城市公交查询</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+	<string name="buslinesearch">公交线路查询</string>
+	<string name="bustransfersearch">公交换乘查询</string>
+	<string name="nearbussearch">周边公交查询</string>
+	<string name="insertsearchinfo">输入搜索信息</string>
+	<string name="startpos">起点</string>
+	<string name="endpos">终点</string>
+	<string name="setcity">城市</string>
+	<string name="cityhint">设置国内城市</string>
+	<string name="setreturnnum">返回条目数</string>
+	<string name="numhint">换乘方案数（0~5）</string>
+	<string name="save">保存</string>
+	<string name="rc">优先级</string>
+	<string name="rchint">换乘优先级（0~5）</string>
+	<string name="radius">搜索半径</string>
+	<string name="radiushint">周围站点搜索半径</string>
+	<string name="copyright">all right reserved</string>
+</resources>
